@@ -2,124 +2,112 @@
 <html lang="pt">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mig | Redmi N13P+</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mig | Sovereign Display</title>
     <style>
         :root {
             --primary: #a855f7;
             --phone-frame: #1a1a1a;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background: #020202; /* Fundo da página escuro para destacar o cll */
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            font-family: 'Segoe UI', sans-serif;
-            color: white; 
-            overflow: hidden;
+            background: #020202; 
+            display: flex; justify-content: center; align-items: center; 
+            height: 100vh; font-family: 'Segoe UI', sans-serif;
+            color: white; overflow: hidden;
         }
 
-        /* CHASSIS AMPLIADO E CENTRALIZADO */
+        /* CHASSIS RESPONSIVO */
         .phone-container {
-            width: 350px; /* Aumentado para PC */
-            height: 720px; /* Aumentado para PC */
-            background: #000; 
-            border-radius: 45px;
+            width: 350px; height: 720px;
+            background: #000; border-radius: 45px;
             border: 5px solid var(--phone-frame);
             position: relative;
             box-shadow: 0 0 80px rgba(168, 85, 247, 0.2);
-            display: flex; 
-            flex-direction: column; 
-            overflow: hidden;
+            display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        @media (max-width: 400px) {
+            .phone-container { width: 95vw; height: 92vh; border-radius: 35px; }
         }
 
         .punch-hole {
             position: absolute; top: 15px; left: 50%;
             transform: translateX(-50%);
             width: 12px; height: 12px;
-            background: #000; border-radius: 50%;
-            z-index: 10;
+            background: #000; border-radius: 50%; z-index: 10;
         }
 
-        /* ECRÃ COM O FUNDO DENTRO DO TELEMÓVEL */
         .display-area {
             flex: 1;
             background: url('fundo_mig.png') no-repeat center center;
             background-size: cover;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center;
+            display: flex; flex-direction: column; align-items: center;
             position: relative;
         }
 
-        /* Camada escura para garantir leitura sobre o fundo */
         .display-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3); 
-            z-index: 1;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.35); z-index: 1;
         }
 
         .content-layer {
-            position: relative;
-            z-index: 2;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: relative; z-index: 2; width: 100%; height: 100%;
+            display: flex; flex-direction: column; align-items: center;
         }
 
         .status-bar {
-            width: 100%;
-            padding: 18px 25px 5px;
-            display: flex; 
-            justify-content: space-between;
-            align-items: center;
+            width: 100%; padding: 18px 25px 5px;
+            display: flex; justify-content: space-between; align-items: center;
         }
 
         .profile-section { text-align: center; margin-top: 40px; }
         .avatar {
-            width: 100px; height: 100px;
+            width: 95px; height: 95px;
             border-radius: 50%; border: 3px solid var(--primary);
             box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
             object-fit: cover; margin-bottom: 12px;
         }
 
+        /* GRID DE 3 APPS */
         .apps-grid {
-            display: flex; 
-            justify-content: center; 
-            gap: 50px;
-            margin-top: auto; 
-            margin-bottom: 80px; 
-            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px; width: 100%; padding: 0 15px;
+            margin-top: auto; margin-bottom: 80px;
+        }
+
+        /* ANIMAÇÃO TIPO REDMI/HYPEROS */
+        .app-link {
+            display: flex; flex-direction: column; align-items: center;
+            text-decoration: none; color: white;
+            transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Efeito de compressão ao clicar (igual ao toque no Android) */
+        .app-link:active {
+            transform: scale(0.9);
         }
 
         .icon-box {
-            width: 68px; height: 68px;
-            background: rgba(0, 0, 0, 0.7);
+            width: 62px; height: 62px;
+            background: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 18px;
-            display: flex; 
-            justify-content: center; 
-            align-items: center;
-            backdrop-filter: blur(15px);
-            margin-bottom: 8px;
+            display: flex; justify-content: center; align-items: center;
+            backdrop-filter: blur(15px); margin-bottom: 8px;
+            transition: background 0.3s;
         }
 
+        .round-icon { border-radius: 10px; }
+        .app-link span { font-size: 0.55rem; font-weight: 800; letter-spacing: 0.5px; opacity: 0.9; }
+
         .android-nav {
-            height: 50px; 
-            background: rgba(0,0,0,0.5);
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 55px; 
-            opacity: 0.8;
-            z-index: 3;
+            height: 50px; background: rgba(0,0,0,0.6);
+            display: flex; justify-content: center; align-items: center; gap: 50px; 
+            opacity: 0.8; z-index: 3;
         }
     </style>
 </head>
@@ -133,28 +121,32 @@
             
             <div class="content-layer">
                 <div class="status-bar">
-                    <span id="dynamic-clock" style="font-weight: 700; font-size: 0.8rem;">--:--</span>
+                    <span id="dynamic-clock" style="font-weight: 700; font-size: 0.75rem;">--:--</span>
                     <div style="display:flex; gap: 6px;">
-                        <img src="sinal.png" style="height:12px;">
-                        <img src="wifi.png" style="height:12px;">
-                        <img src="bateria.png" style="height:12px;">
+                        <img src="sinal.png" style="height:11px;">
+                        <img src="wifi.png" style="height:11px;">
+                        <img src="bateria.png" style="height:11px;">
                     </div>
                 </div>
 
                 <div class="profile-section">
                     <img src="mig_profile.png" class="avatar" alt="Mig">
-                    <h2 style="font-size: 1.3rem;">MIG 📱</h2>
-                    <p style="font-size: 0.7rem; opacity: 0.9; letter-spacing: 1px;">REDMI NOTE 13 PRO+ USER</p>
+                    <h2 style="font-size: 1.2rem; text-transform: uppercase;">MIG 📱</h2>
+                    <p style="font-size: 0.6rem; opacity: 0.9; letter-spacing: 1px;">REDMI NOTE 13 PRO+ USER</p>
                 </div>
 
                 <div class="apps-grid">
-                    <a href="#" style="text-decoration:none; color:white; text-align:center;">
-                        <div class="icon-box"><img src="tiktok.png" style="width:40px;"></div>
-                        <span style="font-size:0.65rem; font-weight:800;">TIKTOK</span>
+                    <a href="https://discord.com/users/1253102174343270411" target="_blank" class="app-link">
+                        <div class="icon-box"><img src="discord.png" class="round-icon" style="width:36px;"></div>
+                        <span>DISCORD</span>
                     </a>
-                    <a href="#" style="text-decoration:none; color:white; text-align:center;">
-                        <div class="icon-box"><img src="instagram.png" style="width:40px;"></div>
-                        <span style="font-size:0.65rem; font-weight:800;">INSTAGRAM</span>
+                    <a href="https://www.tiktok.com/@redmi_n13pp_hype?_r=1&_t=ZG-93lHW2r8w7t" target="_blank" class="app-link">
+                        <div class="icon-box"><img src="tiktok.png" style="width:36px;"></div>
+                        <span>TIKTOK</span>
+                    </a>
+                    <a href="https://www.instagram.com/mig.0193?igsh=MXZ5NXBlNGlqcndubQ==" target="_blank" class="app-link">
+                        <div class="icon-box"><img src="instagram.png" style="width:36px;"></div>
+                        <span>INSTAGRAM</span>
                     </a>
                 </div>
             </div>
@@ -162,8 +154,8 @@
 
         <div class="android-nav">
             <div style="width:0; height:0; border-top:6px solid transparent; border-bottom:6px solid transparent; border-right:11px solid white;"></div>
-            <div style="width:17px; height:17px; border:2px solid white; border-radius:50%;"></div>
-            <div style="width:15px; height:15px; border:2px solid white; border-radius:3.5px;"></div>
+            <div style="width:16px; height:16px; border:2px solid white; border-radius:50%;"></div>
+            <div style="width:14px; height:14px; border:2px solid white; border-radius:3.5px;"></div>
         </div>
     </div>
 
@@ -178,4 +170,4 @@
         updateTime();
     </script>
 </body>
-</html>
+    </html>
