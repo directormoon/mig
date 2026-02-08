@@ -19,18 +19,25 @@
             color: white; overflow: hidden;
         }
 
-        /* CHASSIS RESPONSIVO */
+        /* CHASSIS RESPONSIVO COM AJUSTE DE ALTURA */
         .phone-container {
-            width: 350px; height: 720px;
+            width: 350px; 
+            height: 720px;
             background: #000; border-radius: 45px;
             border: 5px solid var(--phone-frame);
             position: relative;
             box-shadow: 0 0 80px rgba(168, 85, 247, 0.2);
             display: flex; flex-direction: column; overflow: hidden;
+            transition: 0.3s ease;
         }
 
+        /* CORREÇÃO PARA NÃO CORTAR EMBAIXO NO TELEMÓVEL */
         @media (max-width: 400px) {
-            .phone-container { width: 95vw; height: 92vh; border-radius: 35px; }
+            .phone-container { 
+                width: 92vw; 
+                height: 88vh; /* Reduzido para dar margem de segurança */
+                border-radius: 35px; 
+            }
         }
 
         .punch-hole {
@@ -63,50 +70,44 @@
             display: flex; justify-content: space-between; align-items: center;
         }
 
-        .profile-section { text-align: center; margin-top: 40px; }
+        .profile-section { text-align: center; margin-top: 35px; }
         .avatar {
-            width: 95px; height: 95px;
+            width: 90px; height: 90px;
             border-radius: 50%; border: 3px solid var(--primary);
             box-shadow: 0 0 25px rgba(168, 85, 247, 0.5);
             object-fit: cover; margin-bottom: 12px;
         }
 
-        /* GRID DE 3 APPS */
         .apps-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 15px; width: 100%; padding: 0 15px;
-            margin-top: auto; margin-bottom: 80px;
+            gap: 10px; width: 100%; padding: 0 15px;
+            margin-top: auto; margin-bottom: 70px;
         }
 
-        /* ANIMAÇÃO TIPO REDMI/HYPEROS */
         .app-link {
             display: flex; flex-direction: column; align-items: center;
             text-decoration: none; color: white;
             transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Efeito de compressão ao clicar (igual ao toque no Android) */
-        .app-link:active {
-            transform: scale(0.9);
-        }
+        .app-link:active { transform: scale(0.88); }
 
         .icon-box {
-            width: 62px; height: 62px;
+            width: 58px; height: 58px;
             background: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 18px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 16px;
             display: flex; justify-content: center; align-items: center;
-            backdrop-filter: blur(15px); margin-bottom: 8px;
-            transition: background 0.3s;
+            backdrop-filter: blur(12px); margin-bottom: 6px;
         }
 
         .round-icon { border-radius: 10px; }
-        .app-link span { font-size: 0.55rem; font-weight: 800; letter-spacing: 0.5px; opacity: 0.9; }
+        .app-link span { font-size: 0.5rem; font-weight: 800; letter-spacing: 0.5px; opacity: 0.9; }
 
         .android-nav {
-            height: 50px; background: rgba(0,0,0,0.6);
-            display: flex; justify-content: center; align-items: center; gap: 50px; 
+            height: 45px; background: rgba(0,0,0,0.6);
+            display: flex; justify-content: center; align-items: center; gap: 45px; 
             opacity: 0.8; z-index: 3;
         }
     </style>
@@ -131,21 +132,21 @@
 
                 <div class="profile-section">
                     <img src="mig_profile.png" class="avatar" alt="Mig">
-                    <h2 style="font-size: 1.2rem; text-transform: uppercase;">MIG 📱</h2>
-                    <p style="font-size: 0.6rem; opacity: 0.9; letter-spacing: 1px;">REDMI NOTE 13 PRO+ USER</p>
+                    <h2 style="font-size: 1.1rem; text-transform: uppercase;">MIG 📱</h2>
+                    <p style="font-size: 0.55rem; opacity: 0.9; letter-spacing: 1px;">REDMI NOTE 13 PRO+ USER</p>
                 </div>
 
                 <div class="apps-grid">
                     <a href="https://discord.com/users/1253102174343270411" target="_blank" class="app-link">
-                        <div class="icon-box"><img src="discord.png" class="round-icon" style="width:36px;"></div>
+                        <div class="icon-box"><img src="discord.png" class="round-icon" style="width:34px;"></div>
                         <span>DISCORD</span>
                     </a>
                     <a href="https://www.tiktok.com/@redmi_n13pp_hype?_r=1&_t=ZG-93lHW2r8w7t" target="_blank" class="app-link">
-                        <div class="icon-box"><img src="tiktok.png" style="width:36px;"></div>
+                        <div class="icon-box"><img src="tiktok.png" style="width:34px;"></div>
                         <span>TIKTOK</span>
                     </a>
                     <a href="https://www.instagram.com/mig.0193?igsh=MXZ5NXBlNGlqcndubQ==" target="_blank" class="app-link">
-                        <div class="icon-box"><img src="instagram.png" style="width:36px;"></div>
+                        <div class="icon-box"><img src="instagram.png" style="width:34px;"></div>
                         <span>INSTAGRAM</span>
                     </a>
                 </div>
@@ -170,4 +171,4 @@
         updateTime();
     </script>
 </body>
-    </html>
+</html>
