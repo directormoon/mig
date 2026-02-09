@@ -6,170 +6,160 @@
     <title>Mig | Sovereign Display</title>
     <style>
         :root {
-            --primary: #a855f7;
-            --phone-frame: #1a1a1a;
+            --icon-bg: #1c1c1e; 
+            --p-height: 88vh;
+            --p-width: calc(var(--p-height) * 0.46);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
             background: #020202; 
             display: flex; justify-content: center; align-items: center; 
             height: 100vh; width: 100vw;
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
             color: white; overflow: hidden;
-            padding: 20px; /* Margem de segurança global */
         }
 
-        /* CHASSIS COM ESCALONAMENTO INTELIGENTE */
-        .phone-container {
-            width: auto;
-            height: 100%;
-            max-height: 720px; /* Limite para PC */
-            aspect-ratio: 9 / 18.5; /* Proporção real do Redmi Note 13 Pro+ */
-            background: #000; 
+        .phone-frame {
+            width: var(--p-width);
+            height: var(--p-height);
+            min-width: 290px;
+            background: #000;
             border-radius: 40px;
-            border: 5px solid var(--phone-frame);
+            border: 3px solid #1a1a1a;
             position: relative;
-            box-shadow: 0 0 50px rgba(168, 85, 247, 0.15);
-            display: flex; flex-direction: column; 
             overflow: hidden;
         }
 
-        /* Ajustes específicos para ecrãs pequenos */
-        @media (max-width: 480px) {
-            .phone-container {
-                max-height: 85vh; /* Garante que nunca toque no topo ou fundo */
-                border-width: 4px;
-            }
+        /* STATUS BAR COMPLETA (Rede + Wifi + Bateria) */
+        .status-bar {
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 22px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            z-index: 10;
         }
-
-        .punch-hole {
-            position: absolute; top: 12px; left: 50%;
-            transform: translateX(-50%);
-            width: 10px; height: 10px;
-            background: #000; border-radius: 50%; z-index: 10;
+        
+        .status-right { 
+            display: flex; 
+            gap: 5px; 
+            align-items: center; 
+        }
+        
+        /* Ajuste de escala para os ícones da barra */
+        .status-right img { 
+            height: 10px; 
+            width: auto;
+            opacity: 0.9;
         }
 
         .display-area {
-            flex: 1;
+            width: 100%; height: 100%;
             background: url('fundo_mig.png') no-repeat center center;
             background-size: cover;
-            display: flex; flex-direction: column; align-items: center;
-            position: relative;
-        }
-
-        .display-overlay {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3); z-index: 1;
-        }
-
-        .content-layer {
-            position: relative; z-index: 2; width: 100%; height: 100%;
+            padding: 55px 20px 0 20px;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        .status-bar {
-            width: 100%; padding: 15px 20px 5px;
-            display: flex; justify-content: space-between; align-items: center;
+        /* WIDGETS E APPS (Cantos Squarcle mantidos) */
+        .weather-widget {
+            width: 100%;
+            aspect-ratio: 2.15 / 1;
+            background: linear-gradient(135deg, #4da1ff 0%, #1a73e8 100%);
+            border-radius: 20px; 
+            padding: 20px;
+            margin-bottom: 14px;
+            display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        .profile-section { text-align: center; margin-top: 30px; }
-        .avatar {
-            width: 85px; height: 85px;
-            border-radius: 50%; border: 3px solid var(--primary);
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
-            object-fit: cover; margin-bottom: 10px;
+        .main-block {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .shikimori-widget {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #2c2c2e url('shikimori_widget.png') center;
+            background-size: cover;
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.05);
         }
 
         .apps-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px; width: 100%; padding: 0 15px;
-            margin-top: auto; margin-bottom: 60px;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 12px;
         }
-
-        .app-link {
-            display: flex; flex-direction: column; align-items: center;
-            text-decoration: none; color: white;
-            transition: transform 0.1s ease;
-        }
-
-        .app-link:active { transform: scale(0.85); }
 
         .icon-box {
-            width: 55px; height: 55px;
-            background: rgba(0, 0, 0, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
+            background: var(--icon-bg);
+            border-radius: 16px; 
             display: flex; justify-content: center; align-items: center;
-            backdrop-filter: blur(10px); margin-bottom: 5px;
+            aspect-ratio: 1 / 1;
+            border: 1px solid rgba(255,255,255,0.03);
+            text-decoration: none;
         }
+        .icon-box img { width: 55%; height: 55%; object-fit: contain; }
 
-        .round-icon { border-radius: 10px; }
-        .app-link span { font-size: 0.5rem; font-weight: 800; opacity: 0.9; }
-
-        .android-nav {
-            height: 40px; background: rgba(0,0,0,0.5);
-            display: flex; justify-content: center; align-items: center; gap: 40px; 
-            opacity: 0.7; z-index: 3;
+        .gesture-bar {
+            position: absolute; bottom: 10px; left: 50%;
+            transform: translateX(-50%);
+            width: 35%; height: 4px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-container">
-        <div class="punch-hole"></div>
-        
-        <div class="display-area">
-            <div class="display-overlay"></div>
-            
-            <div class="content-layer">
-                <div class="status-bar">
-                    <span id="dynamic-clock" style="font-weight: 700; font-size: 0.7rem;">--:--</span>
-                    <div style="display:flex; gap: 5px;">
-                        <img src="sinal.png" style="height:10px;">
-                        <img src="wifi.png" style="height:10px;">
-                        <img src="bateria.png" style="height:10px;">
-                    </div>
-                </div>
-
-                <div class="profile-section">
-                    <img src="mig_profile.png" class="avatar" alt="Mig">
-                    <h2 style="font-size: 1.1rem; letter-spacing: 0.5px;">MIG</h2>
-                    <p style="font-size: 0.5rem; opacity: 0.8; letter-spacing: 1px;">REDMI NOTE 13 PRO+</p>
-                </div>
-
-                <div class="apps-grid">
-                    <a href="https://discord.com/users/1253102174343270411" target="_blank" class="app-link">
-                        <div class="icon-box"><img src="discord.png" class="round-icon" style="width:32px;"></div>
-                        <span>DISCORD</span>
-                    </a>
-                    <a href="https://www.tiktok.com/@redmi_n13pp_hype?_r=1&_t=ZG-93lHW2r8w7t" target="_blank" class="app-link">
-                        <div class="icon-box"><img src="tiktok.png" style="width:32px;"></div>
-                        <span>TIKTOK</span>
-                    </a>
-                    <a href="https://www.instagram.com/mig.0193?igsh=MXZ5NXBlNGlqcndubQ==" target="_blank" class="app-link">
-                        <div class="icon-box"><img src="instagram.png" style="width:32px;"></div>
-                        <span>INSTAGRAM</span>
-                    </a>
-                </div>
+    <div class="phone-frame">
+        <div class="status-bar">
+            <span id="live-time">00:00</span>
+            <div class="status-right">
+                <img src="rede.png" alt="Sinal">
+                <img src="wifi.png" alt="Wifi">
+                <img src="bateria.png" alt="Bateria">
             </div>
         </div>
 
-        <div class="android-nav">
-            <div style="width:0; height:0; border-top:5px solid transparent; border-bottom:5px solid transparent; border-right:10px solid white;"></div>
-            <div style="width:14px; height:14px; border:2px solid white; border-radius:50%;"></div>
-            <div style="width:12px; height:12px; border:2px solid white; border-radius:3px;"></div>
+        <div class="display-area">
+            <div class="weather-widget">
+                <div style="display:flex; justify-content: space-between;">
+                    <h2 style="font-size: 2.3rem;">5°</h2>
+                    <img src="https://img.icons8.com/fluency/48/sun.png" style="width:40px;">
+                </div>
+                <p style="font-size: 0.7rem; font-weight: bold;">BEAUVAIS</p>
+            </div>
+
+            <div class="main-block">
+                <div class="shikimori-widget"></div>
+                <div class="apps-grid">
+                    <a href="#" class="icon-box"><img src="discord.png"></a>
+                    <a href="#" class="icon-box"><img src="tiktok.png"></a>
+                    <a href="#" class="icon-box"><img src="instagram.png"></a>
+                    <a href="https://open.spotify.com" class="icon-box"><img src="spotify.png"></a>
+                </div>
+            </div>
         </div>
+        
+        <div class="gesture-bar"></div>
     </div>
 
     <script>
         function updateTime() {
             const now = new Date();
-            document.getElementById('dynamic-clock').textContent = 
-                String(now.getHours()).padStart(2, '0') + ":" + 
-                String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('live-time').innerText = 
+                now.getHours().toString().padStart(2, '0') + ':' + 
+                now.getMinutes().toString().padStart(2, '0');
         }
         setInterval(updateTime, 1000);
         updateTime();
