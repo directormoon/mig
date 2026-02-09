@@ -22,14 +22,10 @@
         }
 
         .phone-frame {
-            width: var(--p-width);
-            height: var(--p-height);
-            min-width: 300px;
-            background: #000;
-            border-radius: 40px;
-            border: 3px solid #1a1a1a;
-            position: relative;
-            overflow: hidden;
+            width: var(--p-width); height: var(--p-height);
+            min-width: 300px; background: #000;
+            border-radius: 40px; border: 3px solid #1a1a1a;
+            position: relative; overflow: hidden;
         }
 
         .status-bar {
@@ -45,54 +41,68 @@
             width: 100%; height: 100%;
             background: url('fundo_mig.png') no-repeat center center;
             background-size: cover;
-            padding: 50px 20px 40px 20px; 
+            padding: 60px 20px 40px 20px; 
             display: flex; flex-direction: column;
         }
 
-        .profile-header {
-            display: flex; justify-content: space-between;
-            align-items: center; width: 100%;
-            margin-bottom: 20px;
-        }
-        .profile-left { display: flex; align-items: center; gap: 10px; }
-        .avatar-circle {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: url('mig_perfil.png') center; background-size: cover;
-            border: 1.5px solid rgba(255,255,255,0.8);
-        }
-        .profile-name { font-size: 0.9rem; font-weight: 700; }
-        .profile-right-text { font-size: 0.62rem; font-weight: 500; opacity: 0.6; }
-
-        .weather-widget {
-            width: 100%; height: 140px; 
-            background: linear-gradient(135deg, #4da1ff 0%, #1a73e8 100%);
-            border-radius: 22px; padding: 20px;
+        /* NOVO WIDGET DE PERFIL (Substitui a Meteorologia) */
+        .profile-widget {
+            width: 100%;
+            height: 140px;
+            background: rgba(28, 28, 30, 0.6);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 20px;
             margin-bottom: 15px;
-            display: flex; flex-direction: column; justify-content: space-between;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .sun-icon {
-            width: 42px !important; height: 42px !important;
-            object-fit: contain;
+        .widget-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: url('mig_perfil.png') center;
+            background-size: cover;
+            border: 2px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .widget-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .widget-name {
+            font-size: 1.4rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .widget-tag {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .main-block { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-
         .shikimori-widget {
             width: 100%; aspect-ratio: 1 / 1;
             background: #2c2c2e url('shikimori_widget.png') center;
-            background-size: cover; border-radius: 22px;
+            background-size: cover; border-radius: 24px;
         }
 
         .apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-
         .icon-box {
-            background: var(--icon-bg); border-radius: 18px;
+            background: var(--icon-bg); border-radius: 20px;
             display: flex; justify-content: center; align-items: center;
             aspect-ratio: 1 / 1; text-decoration: none;
-            transition: transform 0.1s;
         }
-        .icon-box:active { transform: scale(0.95); }
         .icon-box img { width: 55%; height: 55%; object-fit: contain; }
 
         .gesture-bar {
@@ -113,23 +123,13 @@
         </div>
 
         <div class="display-area">
-            <div class="profile-header">
-                <div class="profile-left">
-                    <div class="avatar-circle"></div>
-                    <span class="profile-name">Mig</span>
+            <div class="profile-widget">
+                <div class="widget-avatar"></div>
+                <div class="widget-info">
+                    <span class="widget-tag">Sovereign User</span>
+                    <h2 class="widget-name">Mig</h2>
+                    <span class="widget-tag" style="color: #4da1ff; opacity: 1;">Redmi N13P+</span>
                 </div>
-                <span class="profile-right-text">Redmi N13P+ User</span>
-            </div>
-
-            <div class="weather-widget">
-                <div style="display:flex; justify-content: space-between; align-items: flex-start;">
-                    <div>
-                        <h2 id="temp" style="font-size: 2.3rem; line-height: 1;">--°</h2>
-                        <p id="weather-desc" style="font-size: 0.8rem; margin-top: 4px;">A carregar...</p>
-                    </div>
-                    <img src="https://img.icons8.com/fluency/48/sun.png" class="sun-icon">
-                </div>
-                <p id="location" style="font-size: 0.65rem; font-weight: bold; text-transform: uppercase;">A procurar local...</p>
             </div>
 
             <div class="main-block">
@@ -148,25 +148,11 @@
     <script>
         function updateTime() {
             const now = new Date();
-            document.getElementById('live-time').textContent = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('live-time').textContent = 
+                now.getHours().toString().padStart(2, '0') + ':' + 
+                now.getMinutes().toString().padStart(2, '0');
         }
         setInterval(updateTime, 1000); updateTime();
-
-        async function fetchDynamicWeather() {
-            try {
-                const geoRes = await fetch('https://ipapi.co/json/');
-                const geoData = await geoRes.json();
-                document.getElementById('location').textContent = `${geoData.city || 'Praia da Vitória'}, ${geoData.region || 'Açores'}`;
-                const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${geoData.latitude}&longitude=${geoData.longitude}&current_weather=true`);
-                const weatherData = await weatherRes.json();
-                document.getElementById('temp').textContent = Math.round(weatherData.current_weather.temperature) + '°';
-                document.getElementById('weather-desc').textContent = "Atualizado";
-            } catch (e) {
-                document.getElementById('location').textContent = "PRAIA DA VITÓRIA, AÇORES";
-                document.getElementById('temp').textContent = "16°";
-            }
-        }
-        fetchDynamicWeather();
     </script>
 </body>
 </html>
