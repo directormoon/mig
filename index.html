@@ -63,20 +63,16 @@
         .profile-name { font-size: 0.9rem; font-weight: 700; }
         .profile-right-text { font-size: 0.62rem; font-weight: 500; opacity: 0.6; }
 
-        /* WEATHER WIDGET: Altura fixa para não esticar */
         .weather-widget {
-            width: 100%;
-            height: 140px; 
+            width: 100%; height: 140px; 
             background: linear-gradient(135deg, #4da1ff 0%, #1a73e8 100%);
             border-radius: 22px; padding: 20px;
             margin-bottom: 15px;
             display: flex; flex-direction: column; justify-content: space-between;
         }
 
-        /* ÍCONE DO SOL: Travado para ser sempre quadrado */
         .sun-icon {
-            width: 42px !important;
-            height: 42px !important;
+            width: 42px !important; height: 42px !important;
             object-fit: contain;
         }
 
@@ -128,23 +124,21 @@
             <div class="weather-widget">
                 <div style="display:flex; justify-content: space-between; align-items: flex-start;">
                     <div>
-                        <h2 id="temp" style="font-size: 2.3rem; line-height: 1;">5°</h2>
-                        <p id="weather-desc" style="font-size: 0.8rem; margin-top: 4px;">Cloudy</p>
+                        <h2 id="temp" style="font-size: 2.3rem; line-height: 1;">--°</h2>
+                        <p id="weather-desc" style="font-size: 0.8rem; margin-top: 4px;">A carregar...</p>
                     </div>
                     <img src="https://img.icons8.com/fluency/48/sun.png" class="sun-icon">
                 </div>
-                <p id="location" style="font-size: 0.65rem; font-weight: bold; text-transform: uppercase;">PORTUGAL</p>
+                <p id="location" style="font-size: 0.65rem; font-weight: bold; text-transform: uppercase;">A procurar local...</p>
             </div>
 
             <div class="main-block">
                 <div class="shikimori-widget"></div>
                 <div class="apps-grid">
-                    <a href="https://discord.com" target="_blank" class="icon-box"><img src="discord.png"></a>
-                    <a href="https://www.tiktok.com" target="_blank" class="icon-box"><img src="tiktok.png"></a>
-                    <a href="https://www.instagram.com" target="_blank" class="icon-box"><img src="instagram.png"></a>
-                    <a href="https://open.spotify.com/user/31w653u2mq74c6whlb3za7q52b7e?si=Qq4IA-UwTWKFDQyUGwn3NQ" target="_blank" class="icon-box">
-                        <img src="spotify.png">
-                    </a>
+                    <a href="https://discordapp.com/users/1253102174343270411" target="_blank" class="icon-box"><img src="discord.png"></a>
+                    <a href="https://www.tiktok.com/@redmi_n13pp_hype?_r=1&_t=ZG-93m4gQTxzWr" target="_blank" class="icon-box"><img src="tiktok.png"></a>
+                    <a href="https://www.instagram.com/mig.0193?igsh=MXZ5NXBlNGlqcndubQ==" target="_blank" class="icon-box"><img src="instagram.png"></a>
+                    <a href="https://open.spotify.com" target="_blank" class="icon-box"><img src="spotify.png"></a>
                 </div>
             </div>
         </div>
@@ -158,17 +152,21 @@
         }
         setInterval(updateTime, 1000); updateTime();
 
-        async function getRealWeather() {
+        async function fetchDynamicWeather() {
             try {
                 const geoRes = await fetch('https://ipapi.co/json/');
                 const geoData = await geoRes.json();
-                document.getElementById('location').textContent = `${geoData.city || 'Lisbon'}, ${geoData.country_name || 'Portugal'}`;
+                document.getElementById('location').textContent = `${geoData.city || 'Praia da Vitória'}, ${geoData.region || 'Açores'}`;
                 const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${geoData.latitude}&longitude=${geoData.longitude}&current_weather=true`);
                 const weatherData = await weatherRes.json();
                 document.getElementById('temp').textContent = Math.round(weatherData.current_weather.temperature) + '°';
-            } catch (e) { console.log("Weather offline"); }
+                document.getElementById('weather-desc').textContent = "Atualizado";
+            } catch (e) {
+                document.getElementById('location').textContent = "PRAIA DA VITÓRIA, AÇORES";
+                document.getElementById('temp').textContent = "16°";
+            }
         }
-        getRealWeather();
+        fetchDynamicWeather();
     </script>
 </body>
 </html>
