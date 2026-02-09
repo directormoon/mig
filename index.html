@@ -32,90 +32,74 @@
             overflow: hidden;
         }
 
-        /* STATUS BAR COMPLETA (Rede + Wifi + Bateria) */
         .status-bar {
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 14px 22px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            z-index: 10;
+            position: absolute; top: 0; left: 0; right: 0;
+            display: flex; justify-content: space-between;
+            padding: 16px 20px; z-index: 10;
         }
-        
-        .status-right { 
-            display: flex; 
-            gap: 5px; 
-            align-items: center; 
-        }
-        
-        /* Ajuste de escala para os ícones da barra */
-        .status-right img { 
-            height: 10px; 
-            width: auto;
-            opacity: 0.9;
-        }
+        #live-time { font-size: 0.75rem; font-weight: 600; }
+        .status-right { display: flex; gap: 6px; align-items: center; }
+        .status-right img { height: 11px; }
 
         .display-area {
             width: 100%; height: 100%;
             background: url('fundo_mig.png') no-repeat center center;
             background-size: cover;
-            padding: 55px 20px 0 20px;
+            padding: 45px 18px 0 18px;
             display: flex; flex-direction: column; align-items: center;
         }
 
-        /* WIDGETS E APPS (Cantos Squarcle mantidos) */
+        /* PERFIL DO MIG (SEM ID) */
+        .mig-profile {
+            align-self: flex-start;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding-left: 5px;
+        }
+        .mig-avatar {
+            width: 35px; height: 35px;
+            border-radius: 50%;
+            background: url('mig_perfil.png') center;
+            background-size: cover;
+            border: 1.5px solid white;
+        }
+        .mig-name { font-size: 0.8rem; font-weight: bold; }
+
         .weather-widget {
             width: 100%;
             aspect-ratio: 2.15 / 1;
             background: linear-gradient(135deg, #4da1ff 0%, #1a73e8 100%);
-            border-radius: 20px; 
-            padding: 20px;
-            margin-bottom: 14px;
+            border-radius: 20px; padding: 20px;
+            margin-bottom: 12px;
             display: flex; flex-direction: column; justify-content: space-between;
         }
 
         .main-block {
             width: 100%;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 14px;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
         }
 
         .shikimori-widget {
-            width: 100%;
-            aspect-ratio: 1 / 1;
+            width: 100%; aspect-ratio: 1 / 1;
             background: #2c2c2e url('shikimori_widget.png') center;
-            background-size: cover;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.05);
+            background-size: cover; border-radius: 20px;
         }
 
-        .apps-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: 1fr 1fr;
-            gap: 12px;
-        }
+        .apps-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 
         .icon-box {
-            background: var(--icon-bg);
-            border-radius: 16px; 
+            background: var(--icon-bg); border-radius: 16px;
             display: flex; justify-content: center; align-items: center;
-            aspect-ratio: 1 / 1;
-            border: 1px solid rgba(255,255,255,0.03);
-            text-decoration: none;
+            aspect-ratio: 1 / 1; text-decoration: none;
         }
         .icon-box img { width: 55%; height: 55%; object-fit: contain; }
 
         .gesture-bar {
             position: absolute; bottom: 10px; left: 50%;
             transform: translateX(-50%);
-            width: 35%; height: 4px;
-            background: rgba(255,255,255,0.9);
-            border-radius: 10px;
+            width: 35%; height: 4px; background: rgba(255,255,255,0.9); border-radius: 10px;
         }
     </style>
 </head>
@@ -125,19 +109,25 @@
         <div class="status-bar">
             <span id="live-time">00:00</span>
             <div class="status-right">
-                <img src="rede.png" alt="Sinal">
-                <img src="wifi.png" alt="Wifi">
-                <img src="bateria.png" alt="Bateria">
+                <img src="rede.png"><img src="wifi.png"><img src="bateria.png">
             </div>
         </div>
 
         <div class="display-area">
+            <div class="mig-profile">
+                <div class="mig-avatar"></div>
+                <div class="mig-name">Mig</div>
+            </div>
+
             <div class="weather-widget">
                 <div style="display:flex; justify-content: space-between;">
-                    <h2 style="font-size: 2.3rem;">5°</h2>
-                    <img src="https://img.icons8.com/fluency/48/sun.png" style="width:40px;">
+                    <div>
+                        <h2 id="temp" style="font-size: 2.2rem;">5°</h2>
+                        <p id="desc" style="font-size: 0.8rem;">Cloudy</p>
+                    </div>
+                    <img id="w-icon" src="https://img.icons8.com/fluency/48/sun.png" style="width:38px;">
                 </div>
-                <p style="font-size: 0.7rem; font-weight: bold;">BEAUVAIS</p>
+                <p style="font-size: 0.6rem; font-weight: bold; letter-spacing: 0.5px;">PORTUGAL</p>
             </div>
 
             <div class="main-block">
@@ -146,23 +136,19 @@
                     <a href="#" class="icon-box"><img src="discord.png"></a>
                     <a href="#" class="icon-box"><img src="tiktok.png"></a>
                     <a href="#" class="icon-box"><img src="instagram.png"></a>
-                    <a href="https://open.spotify.com" class="icon-box"><img src="spotify.png"></a>
+                    <a href="https://spotify.com" class="icon-box"><img src="spotify.png"></a>
                 </div>
             </div>
         </div>
-        
         <div class="gesture-bar"></div>
     </div>
 
     <script>
         function updateTime() {
             const now = new Date();
-            document.getElementById('live-time').innerText = 
-                now.getHours().toString().padStart(2, '0') + ':' + 
-                now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('live-time').textContent = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
         }
-        setInterval(updateTime, 1000);
-        updateTime();
+        setInterval(updateTime, 1000); updateTime();
     </script>
 </body>
 </html>
